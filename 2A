@@ -1,0 +1,48 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <chrono>
+using namespace std;
+using namespace std::chrono;
+
+const int NCLIENTES = 10000;   
+const int NPAISES = 195;       
+
+int DetalleCliente[NCLIENTES][3];
+
+void generarClientes() {
+    for (int i = 0; i < NCLIENTES; i++) {
+        DetalleCliente[i][0] = rand() % 2; // 0=M, 1=F
+        DetalleCliente[i][1] = 1940 + rand() % (2024 - 1940 + 1); // año nacimiento
+        DetalleCliente[i][2] = 1 + rand() % NPAISES; // país
+    }
+}
+
+void imprimirClientes() {
+    cout << "IdCliente\tSexo\tAñoNac\tIdPais\n";
+    for (int i = 0; i < 10; i++) { // mostrar solo los primeros 10
+        cout << i << "\t\t" 
+             << (DetalleCliente[i][0] == 0 ? "M" : "F") << "\t"
+             << DetalleCliente[i][1] << "\t"
+             << DetalleCliente[i][2] << endl;
+    }
+}
+
+int main() {
+    srand(time(0));
+
+    // ---------------- MATRIZ CLIENTES ----------------
+    auto start1 = high_resolution_clock::now();
+    generarClientes();
+    auto stop1 = high_resolution_clock::now();
+    auto duracion1 = duration_cast<milliseconds>(stop1 - start1);
+    cout << "Tiempo para crear clientes: " << duracion1.count() << " ms\n";
+
+    auto startPrint1 = high_resolution_clock::now();
+    imprimirClientes();
+    auto stopPrint1 = high_resolution_clock::now();
+    auto duracionPrint1 = duration_cast<milliseconds>(stopPrint1 - startPrint1);
+    cout << "Tiempo para imprimir clientes: " << duracionPrint1.count() << " ms\n";
+
+    return 0;
+}
