@@ -1,0 +1,84 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <chrono>
+using namespace std;
+using namespace std::chrono;
+
+//EN ESTE CODIGO ESTA EL EJERCICIO 2A Y 2B JUNTOS
+
+const int NCLIENTES = 10000;   
+const int NTELEFONOS = 12000; 
+const int NPAISES = 195;      
+
+int DetalleCliente[NCLIENTES][3];
+
+long long ServicioTelefonico[NTELEFONOS][3];
+
+void generarClientes() {
+    for (int i = 0; i < NCLIENTES; i++) {
+        DetalleCliente[i][0] = rand() % 2; // 0=M, 1=F
+        DetalleCliente[i][1] = 1940 + rand() % (2024 - 1940 + 1);
+        DetalleCliente[i][2] = 1 + rand() % NPAISES;
+    }
+}
+
+void imprimirClientes() {
+    cout << "IdCliente\tSexo\tAñoNac\tIdPais\n";
+    for (int i = 0; i < 10; i++) { // solo mostrar los primeros 10
+        cout << i << "\t\t" 
+             << (DetalleCliente[i][0] == 0 ? "M" : "F") << "\t"
+             << DetalleCliente[i][1] << "\t"
+             << DetalleCliente[i][2] << endl;
+    }
+}
+
+void generarTelefonos() {
+    for (int i = 0; i < NTELEFONOS; i++) {
+        ServicioTelefonico[i][0] = 60000000 + rand() % 39999999; // nro teléfono
+        ServicioTelefonico[i][1] = 1 + rand() % 5;  // plan entre 1 y 5
+        ServicioTelefonico[i][2] = rand() % NCLIENTES; // id cliente
+    }
+}
+
+void imprimirTelefonos() {
+    cout << "IdTelefono\tTelefono\tPlan\tIdCliente\n";
+    for (int i = 0; i < 10; i++) { 
+        cout << i << "\t\t" 
+             << ServicioTelefonico[i][0] << "\t" 
+             << ServicioTelefonico[i][1] << "\t" 
+             << ServicioTelefonico[i][2] << endl;
+    }
+}
+
+int main() {
+    srand(time(0));
+
+    // ---------------- MATRIZ CLIENTES ----------------
+    auto start1 = high_resolution_clock::now();
+    generarClientes();
+    auto stop1 = high_resolution_clock::now();
+    auto duracion1 = duration_cast<milliseconds>(stop1 - start1);
+    cout << "Tiempo para crear clientes: " << duracion1.count() << " ms\n";
+
+    auto startPrint1 = high_resolution_clock::now();
+    imprimirClientes();
+    auto stopPrint1 = high_resolution_clock::now();
+    auto duracionPrint1 = duration_cast<milliseconds>(stopPrint1 - startPrint1);
+    cout << "Tiempo para imprimir clientes: " << duracionPrint1.count() << " ms\n\n";
+
+    // ---------------- MATRIZ TELEFONOS ----------------
+    auto start2 = high_resolution_clock::now();
+    generarTelefonos();
+    auto stop2 = high_resolution_clock::now();
+    auto duracion2 = duration_cast<milliseconds>(stop2 - start2);
+    cout << "Tiempo para crear telefonos: " << duracion2.count() << " ms\n";
+
+    auto startPrint2 = high_resolution_clock::now();
+    imprimirTelefonos();
+    auto stopPrint2 = high_resolution_clock::now();
+    auto duracionPrint2 = duration_cast<milliseconds>(stopPrint2 - startPrint2);
+    cout << "Tiempo para imprimir telefonos: " << duracionPrint2.count() << " ms\n";
+
+    return 0;
+}
